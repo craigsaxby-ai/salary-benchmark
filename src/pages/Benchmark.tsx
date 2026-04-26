@@ -507,6 +507,20 @@ export default function Benchmark() {
               </div>
             </div>
 
+            {/* Data disclaimer */}
+            <div className="bg-[#0A0F1E] border border-[#1E2740] rounded-xl p-4 mt-6">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="inline-flex items-center justify-center w-4 h-4 rounded-full border border-gray-600 text-gray-500 text-[10px] font-bold leading-none">i</span>
+                <h3 className="text-gray-400 text-xs font-semibold uppercase tracking-wide">About this data</h3>
+              </div>
+              <p className="text-gray-500 text-xs leading-relaxed">
+                Benchmarks are based on our initial survey of 150+ B2B sales leaders and publicly available compensation data from LinkedIn Salary, Glassdoor, and published salary guides. Data covers B2B SaaS and tech roles in the UK and US.
+              </p>
+              <p className="text-gray-500 text-xs leading-relaxed mt-2">
+                Updated quarterly. Individual salaries vary based on company performance, equity, location within region, and negotiation.
+              </p>
+            </div>
+
             {/* CTA to Searchline */}
             <div className="bg-card border border-border rounded-2xl p-6 text-center">
               <p className="text-gray-400 text-sm mb-3">Want to find your next role at market rate?</p>
