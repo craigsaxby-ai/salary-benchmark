@@ -514,7 +514,7 @@ export default function Benchmark() {
                 <h3 className="text-gray-400 text-xs font-semibold uppercase tracking-wide">About this data</h3>
               </div>
               <p className="text-gray-500 text-xs leading-relaxed">
-                Benchmarks are based on our initial survey of 150+ B2B sales leaders and publicly available compensation data from LinkedIn Salary, Glassdoor, and published salary guides. Data covers B2B SaaS and tech roles in the UK and US.
+                Benchmarks are based on our initial survey of 150+ B2B sales leaders and publicly available compensation data from published salary guides and industry research. Data covers B2B SaaS and tech roles in the UK and US.
               </p>
               <p className="text-gray-500 text-xs leading-relaxed mt-2">
                 Updated quarterly. Individual salaries vary based on company performance, equity, location within region, and negotiation.
