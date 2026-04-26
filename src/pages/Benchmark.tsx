@@ -85,6 +85,7 @@ interface FormState {
   industry: string
   location: string
   salary: string
+  ote: string
   currency: 'GBP' | 'USD'
 }
 
@@ -99,6 +100,7 @@ export default function Benchmark() {
     industry: '',
     location: '',
     salary: '',
+    ote: '',
     currency: 'GBP',
   })
 
@@ -111,6 +113,7 @@ export default function Benchmark() {
     form.title && form.stage && form.industry && form.location && form.salary
 
   const userSalary = parseInt(form.salary.replace(/[^0-9]/g, ''), 10) || 0
+  const userOte = parseInt(form.ote.replace(/[^0-9]/g, ''), 10) || 0
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -281,6 +284,28 @@ export default function Benchmark() {
                   />
                 </div>
               </div>
+
+              {/* OTE */}
+              <div>
+                <label className={labelClass}>
+                  Current Total OTE{' '}
+                  <span className="text-gray-500 font-normal">(optional)</span>
+                </label>
+                <p className="text-xs text-gray-500 mb-2">Base + variable/bonus — leave blank if salary only</p>
+                <div className="flex gap-2">
+                  <div className="bg-navy border border-border rounded-lg px-3 py-3 text-sm font-semibold text-gray-500 min-w-[64px] flex items-center justify-center">
+                    {form.currency === 'GBP' ? '£ GBP' : '$ USD'}
+                  </div>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="e.g. 200,000"
+                    value={form.ote}
+                    onChange={(e) => setField('ote', e.target.value)}
+                    className="flex-1 bg-navy border border-border rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange transition-colors"
+                  />
+                </div>
+              </div>
             </div>
 
             <button
@@ -307,14 +332,54 @@ export default function Benchmark() {
             <VerdictBadge salary={userSalary} band={band} currency={form.currency} />
 
             {/* Range bar */}
-            <div className="bg-card border border-border rounded-2xl p-6 mb-6">
-              <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-6">Base Salary Range</h2>
-              <RangeBar salary={userSalary} band={band} currency={form.currency} />
-              <div className="flex justify-between text-xs text-gray-500 mt-2">
-                <span>Low<br />{formatSalary(band.low, form.currency)}</span>
-                <span className="text-center">Median<br />{formatSalary(band.median, form.currency)}</span>
-                <span className="text-right">High<br />{formatSalary(band.high, form.currency)}</span>
+            <div className="bg-card border border-border rounded-2xl p-6 mb-6 space-y-6">
+              {/* Base salary row */}
+              <div>
+                <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-6">Base Salary Range</h2>
+                <RangeBar salary={userSalary} band={band} currency={form.currency} />
+                <div className="flex justify-between text-xs text-gray-500 mt-2">
+                  <span>Low<br />{formatSalary(band.low, form.currency)}</span>
+                  <span className="text-center">Median<br />{formatSalary(band.median, form.currency)}</span>
+                  <span className="text-right">High<br />{formatSalary(band.high, form.currency)}</span>
+                </div>
               </div>
+
+              {/* OTE row */}
+              {userOte > 0 ? (
+                <div>
+                  <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-1">OTE Benchmark</h2>
+                  <p className="text-xs text-gray-500 mb-4">
+                    Market OTE for your role:{' '}
+                    <span className="text-gray-300">{formatSalary(Math.round(band.low * band.oteMultiplier), form.currency)}</span>
+                    {' — '}
+                    <span className="text-gray-300">{formatSalary(Math.round(band.high * band.oteMultiplier), form.currency)}</span>
+                    {' (median: '}
+                    <span className="text-orange font-semibold">{formatSalary(Math.round(band.median * band.oteMultiplier), form.currency)}</span>
+                    {')'}
+                  </p>
+                  <RangeBar
+                    salary={userOte}
+                    band={{
+                      low: Math.round(band.low * band.oteMultiplier),
+                      median: Math.round(band.median * band.oteMultiplier),
+                      high: Math.round(band.high * band.oteMultiplier),
+                      p90: Math.round(band.p90 * band.oteMultiplier),
+                      oteMultiplier: band.oteMultiplier,
+                    }}
+                    currency={form.currency}
+                  />
+                  <div className="flex justify-between text-xs text-gray-500 mt-2">
+                    <span>Low OTE<br />{formatSalary(Math.round(band.low * band.oteMultiplier), form.currency)}</span>
+                    <span className="text-center">Median OTE<br />{formatSalary(Math.round(band.median * band.oteMultiplier), form.currency)}</span>
+                    <span className="text-right">High OTE<br />{formatSalary(Math.round(band.high * band.oteMultiplier), form.currency)}</span>
+                  </div>
+                  <OteVerdictBadge userOte={userOte} band={band} currency={form.currency} />
+                </div>
+              ) : (
+                <p className="text-xs text-gray-500 italic">
+                  Add your OTE above to see how your variable pay compares →
+                </p>
+              )}
             </div>
 
             {/* ── FULL: revealed after email ── */}
@@ -347,21 +412,22 @@ export default function Benchmark() {
 
                   {/* OTE */}
                   <div>
-                    <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">OTE Benchmark (Base + Variable)</h2>
-                    <div className="grid grid-cols-3 gap-3">
+                    <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">OTE Benchmarks by Percentile</h2>
+                    <div className="grid grid-cols-2 gap-3">
                       {[
-                        { label: 'Low OTE', value: Math.round(band.low * band.oteMultiplier) },
-                        { label: 'Median OTE', value: Math.round(band.median * band.oteMultiplier) },
-                        { label: 'High OTE', value: Math.round(band.high * band.oteMultiplier) },
+                        { label: '25th percentile', value: Math.round(Math.round(band.low * 0.9) * band.oteMultiplier) },
+                        { label: '50th percentile (median)', value: Math.round(band.median * band.oteMultiplier) },
+                        { label: '75th percentile', value: Math.round(band.high * band.oteMultiplier) },
+                        { label: '90th percentile', value: Math.round(band.p90 * band.oteMultiplier) },
                       ].map((row) => (
-                        <div key={row.label} className="bg-navy rounded-xl p-4 text-center">
+                        <div key={row.label} className="bg-navy rounded-xl p-4">
                           <div className="text-xs text-gray-500 mb-1">{row.label}</div>
-                          <div className="text-base font-bold text-orange">{formatSalary(row.value, form.currency)}</div>
+                          <div className="text-lg font-bold text-orange">{formatSalary(row.value, form.currency)}</div>
                         </div>
                       ))}
                     </div>
-                    <p className="text-xs text-gray-600 mt-2">
-                      Typical variable split: {Math.round((1 - 1 / band.oteMultiplier) * 100)}% of OTE on top of base
+                    <p className="text-xs text-gray-600 mt-3">
+                      OTE = Base + on-target variable/bonus. Assumes standard commission structure for your role and stage.
                     </p>
                   </div>
 
@@ -555,6 +621,25 @@ function PackageSummary({ salary, band, currency }: { salary: number; band: Sala
           <span className="font-semibold text-orange">{formatSalary(oteEstimate, currency)}</span>
         </div>
       )}
+    </div>
+  )
+}
+
+function OteVerdictBadge({ userOte, band, currency }: { userOte: number; band: SalaryBand; currency: string }) {
+  const oteLow = Math.round(band.low * band.oteMultiplier)
+  const oteHigh = Math.round(band.high * band.oteMultiplier)
+  const verdict: 'below' | 'at' | 'above' = userOte < oteLow ? 'below' : userOte > oteHigh ? 'above' : 'at'
+  const config = {
+    below: { label: 'Your OTE is below market', color: 'text-red-400 bg-red-400/10 border-red-400/20', icon: '⬇' },
+    at: { label: 'Your OTE is at market', color: 'text-orange bg-orange/10 border-orange/20', icon: '✓' },
+    above: { label: 'Your OTE is above market', color: 'text-green bg-green/10 border-green/20', icon: '⬆' },
+  }[verdict]
+
+  return (
+    <div className={`inline-flex items-center gap-2 border rounded-full px-3 py-1.5 text-xs font-semibold mt-3 ${config.color}`}>
+      <span>{config.icon}</span>
+      <span>{config.label}</span>
+      <span className="opacity-70">· Your OTE: {formatSalary(userOte, currency)}</span>
     </div>
   )
 }
