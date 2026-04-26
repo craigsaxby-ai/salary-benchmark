@@ -318,8 +318,74 @@ export default function Benchmark() {
           </form>
         )}
 
-        {/* ── STEP 2: Results (partial) ── */}
-        {(step === 'results' || step === 'full') && band && (
+        {/* ── STEP 2: Teaser + Email Gate ── */}
+        {step === 'results' && band && (
+          <div>
+            {/* Role summary line */}
+            <p className="text-sm text-gray-400 mb-5">
+              Based on{' '}
+              <span className="text-white font-medium">{form.title}</span>
+              {' · '}
+              <span className="text-white font-medium">{form.stage}</span>
+              {' · '}
+              <span className="text-white font-medium">{form.location}</span>
+            </p>
+
+            {/* Verdict pill — no salary numbers */}
+            <VerdictPill salary={userSalary} band={band} />
+
+            {/* Blurred preview of the report */}
+            <div className="relative mt-6 mb-4 overflow-hidden rounded-2xl">
+              <div className="bg-card border border-border rounded-2xl p-6 blur-[6px] select-none pointer-events-none">
+                <div className="h-3 bg-navy rounded mb-4 w-2/3" />
+                <div className="h-6 bg-navy rounded mb-6" />
+                <div className="grid grid-cols-2 gap-3">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="bg-navy rounded-xl p-4">
+                      <div className="h-2 bg-gray-700 rounded mb-2 w-2/3" />
+                      <div className="h-5 bg-gray-600 rounded w-1/2" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/50 to-transparent rounded-2xl" />
+            </div>
+
+            {/* Email capture */}
+            <div className="bg-card border border-orange/20 rounded-2xl p-6 shadow-xl">
+              <div className="text-center mb-5">
+                <h3 className="font-bold text-lg mb-1">Your salary report is ready.</h3>
+                <p className="text-gray-400 text-sm">
+                  Enter your email below to unlock your personalised benchmark.
+                </p>
+              </div>
+              <form onSubmit={handleEmailSubmit} className="flex flex-col gap-3">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <input
+                    type="email"
+                    required
+                    placeholder="your@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="flex-1 bg-navy border border-border rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange transition-colors"
+                  />
+                  <button
+                    type="submit"
+                    className="bg-orange hover:bg-orange/90 transition-colors text-white font-bold px-6 py-3 rounded-lg whitespace-nowrap"
+                  >
+                    Unlock my report →
+                  </button>
+                </div>
+                <p className="text-xs text-gray-500 mt-2 text-center">
+                  By submitting, you agree to receive your salary report and occasional career insights from Searchline. Unsubscribe anytime.
+                </p>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* ── STEP 3: Full Results (revealed after email) ── */}
+        {step === 'full' && band && (
           <div>
             <h1 className="text-3xl font-bold mb-2">Your Benchmark</h1>
             <p className="text-gray-400 mb-8">
@@ -327,6 +393,11 @@ export default function Benchmark() {
               <span className="text-white font-medium">{form.stage}</span> company in{' '}
               <span className="text-white font-medium">{form.location}</span>
             </p>
+
+            {/* Success banner */}
+            <div className="bg-green/10 border border-green/30 text-green rounded-xl px-5 py-3 mb-6 text-sm font-medium">
+              ✓ Full report also sent to your email
+            </div>
 
             {/* Verdict badge */}
             <VerdictBadge salary={userSalary} band={band} currency={form.currency} />
@@ -382,126 +453,72 @@ export default function Benchmark() {
               )}
             </div>
 
-            {/* ── FULL: revealed after email ── */}
-            {step === 'full' ? (
-              <>
-                {/* Success banner */}
-                <div className="bg-green/10 border border-green/30 text-green rounded-xl px-5 py-3 mb-6 text-sm font-medium">
-                  ✓ Full report also sent to your email
-                </div>
-
-                {/* Full data */}
-                <div className="bg-card border border-border rounded-2xl p-6 mb-6 space-y-6">
-                  {/* Percentiles */}
-                  <div>
-                    <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Full Percentile Breakdown</h2>
-                    <div className="grid grid-cols-2 gap-3">
-                      {[
-                        { label: '25th percentile', value: Math.round(band.low * 0.9) },
-                        { label: '50th percentile (median)', value: band.median },
-                        { label: '75th percentile', value: band.high },
-                        { label: '90th percentile', value: band.p90 },
-                      ].map((row) => (
-                        <div key={row.label} className="bg-navy rounded-xl p-4">
-                          <div className="text-xs text-gray-500 mb-1">{row.label}</div>
-                          <div className="text-lg font-bold">{formatSalary(row.value, form.currency)}</div>
-                        </div>
-                      ))}
+            {/* Full percentile + OTE + equity data */}
+            <div className="bg-card border border-border rounded-2xl p-6 mb-6 space-y-6">
+              {/* Percentiles */}
+              <div>
+                <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Full Percentile Breakdown</h2>
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { label: '25th percentile', value: Math.round(band.low * 0.9) },
+                    { label: '50th percentile (median)', value: band.median },
+                    { label: '75th percentile', value: band.high },
+                    { label: '90th percentile', value: band.p90 },
+                  ].map((row) => (
+                    <div key={row.label} className="bg-navy rounded-xl p-4">
+                      <div className="text-xs text-gray-500 mb-1">{row.label}</div>
+                      <div className="text-lg font-bold">{formatSalary(row.value, form.currency)}</div>
                     </div>
-                  </div>
-
-                  {/* OTE */}
-                  <div>
-                    <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">OTE Benchmarks by Percentile</h2>
-                    <div className="grid grid-cols-2 gap-3">
-                      {[
-                        { label: '25th percentile', value: Math.round(Math.round(band.low * 0.9) * band.oteMultiplier) },
-                        { label: '50th percentile (median)', value: Math.round(band.median * band.oteMultiplier) },
-                        { label: '75th percentile', value: Math.round(band.high * band.oteMultiplier) },
-                        { label: '90th percentile', value: Math.round(band.p90 * band.oteMultiplier) },
-                      ].map((row) => (
-                        <div key={row.label} className="bg-navy rounded-xl p-4">
-                          <div className="text-xs text-gray-500 mb-1">{row.label}</div>
-                          <div className="text-lg font-bold text-orange">{formatSalary(row.value, form.currency)}</div>
-                        </div>
-                      ))}
-                    </div>
-                    <p className="text-xs text-gray-600 mt-3">
-                      OTE = Base + on-target variable/bonus. Assumes standard commission structure for your role and stage.
-                    </p>
-                  </div>
-
-                  {/* Equity */}
-                  <div>
-                    <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Equity Benchmarks</h2>
-                    <EquityTable title={form.title} stage={form.stage} />
-                  </div>
-
-                  {/* Your package summary */}
-                  <div className="bg-orange/5 border border-orange/20 rounded-xl p-4">
-                    <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Your Package vs Market</h2>
-                    <PackageSummary salary={userSalary} band={band} currency={form.currency} />
-                  </div>
-                </div>
-
-                {/* CTA to Searchline */}
-                <div className="bg-card border border-border rounded-2xl p-6 text-center">
-                  <p className="text-gray-400 text-sm mb-3">Want to find your next role at market rate?</p>
-                  <a
-                    href="https://candidate-portal-taupe.vercel.app/signup"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block bg-orange hover:bg-orange/90 transition-colors text-white font-bold px-6 py-3 rounded-xl"
-                  >
-                    Join Searchline →
-                  </a>
-                </div>
-              </>
-            ) : (
-              /* ── LOCKED section ── */
-              <div className="relative">
-                {/* Blurred preview */}
-                <div className="bg-card border border-border rounded-2xl p-6 blur-locked select-none pointer-events-none mb-4">
-                  <div className="grid grid-cols-2 gap-3 mb-4">
-                    {['25th percentile', '50th percentile', '75th percentile', '90th percentile'].map((l) => (
-                      <div key={l} className="bg-navy rounded-xl p-4">
-                        <div className="text-xs text-gray-500 mb-1">{l}</div>
-                        <div className="text-lg font-bold">████████</div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="h-16 bg-navy rounded-xl" />
-                </div>
-
-                {/* Email capture overlay */}
-                <div className="bg-card border border-orange/20 rounded-2xl p-6 shadow-xl">
-                  <div className="text-center mb-5">
-                    <div className="text-2xl mb-2">🔒</div>
-                    <h3 className="font-bold text-lg mb-1">See the full breakdown</h3>
-                    <p className="text-gray-400 text-sm">
-                      Enter your email to unlock percentiles, OTE benchmarks and equity data — free.
-                    </p>
-                  </div>
-                  <form onSubmit={handleEmailSubmit} className="flex flex-col sm:flex-row gap-3">
-                    <input
-                      type="email"
-                      required
-                      placeholder="your@email.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="flex-1 bg-navy border border-border rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange transition-colors"
-                    />
-                    <button
-                      type="submit"
-                      className="bg-orange hover:bg-orange/90 transition-colors text-white font-bold px-6 py-3 rounded-lg whitespace-nowrap"
-                    >
-                      Send me the full report →
-                    </button>
-                  </form>
-                  <p className="text-gray-600 text-xs text-center mt-3">No spam, ever. Unsubscribe anytime.</p>
+                  ))}
                 </div>
               </div>
-            )}
+
+              {/* OTE by percentile */}
+              <div>
+                <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">OTE Benchmarks by Percentile</h2>
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { label: '25th percentile', value: Math.round(Math.round(band.low * 0.9) * band.oteMultiplier) },
+                    { label: '50th percentile (median)', value: Math.round(band.median * band.oteMultiplier) },
+                    { label: '75th percentile', value: Math.round(band.high * band.oteMultiplier) },
+                    { label: '90th percentile', value: Math.round(band.p90 * band.oteMultiplier) },
+                  ].map((row) => (
+                    <div key={row.label} className="bg-navy rounded-xl p-4">
+                      <div className="text-xs text-gray-500 mb-1">{row.label}</div>
+                      <div className="text-lg font-bold text-orange">{formatSalary(row.value, form.currency)}</div>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-gray-600 mt-3">
+                  OTE = Base + on-target variable/bonus. Assumes standard commission structure for your role and stage.
+                </p>
+              </div>
+
+              {/* Equity */}
+              <div>
+                <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Equity Benchmarks</h2>
+                <EquityTable title={form.title} stage={form.stage} />
+              </div>
+
+              {/* Your package summary */}
+              <div className="bg-orange/5 border border-orange/20 rounded-xl p-4">
+                <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Your Package vs Market</h2>
+                <PackageSummary salary={userSalary} band={band} currency={form.currency} />
+              </div>
+            </div>
+
+            {/* CTA to Searchline */}
+            <div className="bg-card border border-border rounded-2xl p-6 text-center">
+              <p className="text-gray-400 text-sm mb-3">Want to find your next role at market rate?</p>
+              <a
+                href="https://candidate-portal-taupe.vercel.app/signup"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block bg-orange hover:bg-orange/90 transition-colors text-white font-bold px-6 py-3 rounded-xl"
+              >
+                Join Searchline →
+              </a>
+            </div>
           </div>
         )}
 
@@ -537,6 +554,22 @@ function ChevronDown() {
       <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
       </svg>
+    </div>
+  )
+}
+
+function VerdictPill({ salary, band }: { salary: number; band: SalaryBand }) {
+  const verdict = getVerdict(salary, band)
+  const config = {
+    below: { label: "You're below market", color: 'text-red-400 bg-red-400/10 border-red-400/20', icon: '⬇' },
+    at: { label: "You're at market", color: 'text-orange bg-orange/10 border-orange/20', icon: '✓' },
+    above: { label: "You're above market", color: 'text-green bg-green/10 border-green/20', icon: '⬆' },
+  }[verdict]
+
+  return (
+    <div className={`inline-flex items-center gap-2 border rounded-full px-4 py-2 text-sm font-semibold mb-2 ${config.color}`}>
+      <span>{config.icon}</span>
+      <span>{config.label}</span>
     </div>
   )
 }
