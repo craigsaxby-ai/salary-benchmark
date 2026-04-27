@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { supabase } from '../lib/supabase'
 
 // ─── Salary data ──────────────────────────────────────────────────────────────
 
@@ -164,6 +165,22 @@ export default function Benchmark() {
     await new Promise((r) => setTimeout(r, 1500))
     setLoading(false)
     setStep('full')
+    // Persist lead to Supabase — fire-and-forget, non-blocking
+    if (supabase) {
+      supabase.from('benchmark_leads').insert({
+        email,
+        job_title: form.title,
+        company_stage: form.stage,
+        industry: form.industry,
+        location: form.location,
+        current_salary: form.salary,
+        current_ote: form.ote || null,
+        currency: form.currency,
+      }).then(({ error }) => {
+        if (error) console.error('[benchmark] lead save failed:', error)
+        else console.log('[benchmark] lead saved')
+      })
+    }
   }
 
   function setField<K extends keyof FormState>(key: K, value: FormState[K]) {
