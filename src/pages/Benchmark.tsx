@@ -105,8 +105,8 @@ function formatSalary(n: number, currency: string) {
 }
 
 function getVerdict(salary: number, band: SalaryBand): 'below' | 'at' | 'above' {
-  if (salary < band.low) return 'below'
-  if (salary > band.high) return 'above'
+  if (salary < band.median * 0.9) return 'below'
+  if (salary > band.median * 1.1) return 'above'
   return 'at'
 }
 
@@ -509,10 +509,10 @@ export default function Benchmark() {
                 <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Full Percentile Breakdown</h2>
                 <div className="grid grid-cols-2 gap-3">
                   {[
-                    { label: '25th percentile', value: Math.round(band.low * 0.9) },
-                    { label: '50th percentile (median)', value: band.median },
-                    { label: '75th percentile', value: band.high },
-                    { label: '90th percentile', value: band.p90 },
+                    { label: '25th percentile', value: Math.round(band.low) },
+                    { label: '50th percentile (median)', value: Math.round(band.median) },
+                    { label: '75th percentile', value: Math.round((band.median + band.high) / 2) },
+                    { label: '90th percentile', value: Math.round(band.p90) },
                   ].map((row) => (
                     <div key={row.label} className="bg-navy rounded-xl p-4">
                       <div className="text-xs text-gray-500 mb-1">{row.label}</div>
@@ -527,9 +527,9 @@ export default function Benchmark() {
                 <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">OTE Benchmarks by Percentile</h2>
                 <div className="grid grid-cols-2 gap-3">
                   {[
-                    { label: '25th percentile', value: Math.round(Math.round(band.low * 0.9) * band.oteMultiplier) },
+                    { label: '25th percentile', value: Math.round(band.low * band.oteMultiplier) },
                     { label: '50th percentile (median)', value: Math.round(band.median * band.oteMultiplier) },
-                    { label: '75th percentile', value: Math.round(band.high * band.oteMultiplier) },
+                    { label: '75th percentile', value: Math.round(((band.median + band.high) / 2) * band.oteMultiplier) },
                     { label: '90th percentile', value: Math.round(band.p90 * band.oteMultiplier) },
                   ].map((row) => (
                     <div key={row.label} className="bg-navy rounded-xl p-4">
@@ -554,6 +554,49 @@ export default function Benchmark() {
                 <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Your Package vs Market</h2>
                 <PackageSummary salary={userSalary} band={band} currency={form.currency} />
               </div>
+            </div>
+
+            {/* Why Join Searchline */}
+            <div className="bg-[#0A0F1E] border border-[#1E2740] rounded-2xl p-6 mt-6">
+              <h2 className="text-lg font-bold mb-6">Why join Searchline?</h2>
+              <div className="space-y-5">
+                {[
+                  {
+                    icon: '🤖',
+                    title: 'Talk to Erica, our AI career coach',
+                    desc: "Have a 10-minute conversation about your career goals. Erica learns what you want and matches you to opportunities you'd actually want — not just any role.",
+                  },
+                  {
+                    icon: '🎯',
+                    title: 'Get matched, not spammed',
+                    desc: 'We only reach out when a role genuinely fits your profile. No recruitment noise. Just relevant opportunities from companies looking for someone exactly like you.',
+                  },
+                  {
+                    icon: '📊',
+                    title: 'Your career, always on record',
+                    desc: 'Every achievement, course, and win in one place. Erica uses it to find you better opportunities and help you prepare for interviews.',
+                  },
+                ].map((item) => (
+                  <div key={item.title} className="flex gap-4">
+                    <div className="text-2xl flex-shrink-0">{item.icon}</div>
+                    <div>
+                      <div className="font-semibold text-sm mb-1">{item.title}</div>
+                      <div className="text-gray-400 text-sm">{item.desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <a
+                href="https://candidate-portal-taupe.vercel.app/signup"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full mt-6 bg-orange hover:bg-orange/90 transition-colors text-white font-bold text-center py-3 rounded-xl"
+              >
+                Talk to Erica — it's free →
+              </a>
+              <p className="text-xs text-gray-500 text-center mt-2">
+                Join thousands of senior sales professionals already on Searchline
+              </p>
             </div>
 
             {/* Data disclaimer */}
@@ -657,10 +700,9 @@ function VerdictBadge({ salary, band, currency }: { salary: number; band: Salary
 }
 
 function RangeBar({ salary, band, currency }: { salary: number; band: SalaryBand; currency: string }) {
-  const total = band.p90 - band.low
-  const clampedSalary = Math.max(band.low, Math.min(salary, band.p90))
-  const dotPercent = total > 0 ? ((clampedSalary - band.low) / total) * 100 : 0
-  const medianPercent = total > 0 ? ((band.median - band.low) / total) * 100 : 50
+  const rangeMin = band.low * 0.7
+  const rangeMax = band.high * 1.2
+  const dotPercent = Math.min(100, Math.max(0, ((salary - rangeMin) / (rangeMax - rangeMin)) * 100))
 
   return (
     <div className="relative h-6 flex items-center">
@@ -668,11 +710,6 @@ function RangeBar({ salary, band, currency }: { salary: number; band: SalaryBand
       <div className="w-full h-2 bg-navy rounded-full relative">
         {/* Filled range */}
         <div className="absolute inset-0 rounded-full bg-gradient-to-r from-orange/30 via-orange to-green" />
-        {/* Median marker */}
-        <div
-          className="absolute top-1/2 -translate-y-1/2 w-0.5 h-4 bg-white/40 rounded"
-          style={{ left: `${medianPercent}%` }}
-        />
         {/* User dot */}
         {salary > 0 && (
           <div
