@@ -306,7 +306,6 @@ export default function Benchmark() {
                     <option value="">Prefer not to say</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
-                    <option value="Non-binary">Non-binary</option>
                   </select>
                   <ChevronDown />
                 </div>
@@ -836,54 +835,43 @@ function RangeBar({ salary, band, currency, isOte = false }: { salary: number; b
 
   const pct = (v: number) => Math.min(100, Math.max(0, ((v - scaleMin) / span) * 100))
 
-  // p25 = band.low, p50 = band.median, p75 = midpoint, p90 = band.p90
-  const p75 = Math.round((band.median + band.high) / 2)
-  const ticks = [
-    { pos: pct(band.low),    value: band.low,    label: '25th' },
-    { pos: pct(band.median), value: band.median, label: '50th' },
-    { pos: pct(p75),         value: p75,         label: '75th' },
-    { pos: pct(band.p90),    value: band.p90,    label: '90th' },
-  ]
   const dotPos = salary > 0 ? pct(salary) : -1
 
+  // Subtle tick marks at each percentile — no labels (avoids overlap)
+  const p75 = Math.round((band.median + band.high) / 2)
+  const tickPositions = [pct(band.low), pct(band.median), pct(p75), pct(band.p90)]
+
   return (
-    <div className="mb-10">
+    <div className="mb-8">
       {/* Bar */}
-      <div className="relative h-3 rounded-full bg-gradient-to-r from-red-500 via-orange to-green overflow-visible">
-        {/* Percentile tick marks — thin lines on the bar */}
-        {ticks.map((t) => (
+      <div className="relative h-3 rounded-full bg-gradient-to-r from-red-500 via-orange to-green">
+        {/* Subtle tick marks — no labels */}
+        {tickPositions.map((pos, i) => (
           <div
-            key={t.label}
-            className="absolute top-0 bottom-0 w-px bg-white/10"
-            style={{ left: `${t.pos}%` }}
+            key={i}
+            className="absolute top-0 bottom-0 w-px bg-white/15"
+            style={{ left: `${pos}%` }}
           />
         ))}
-        {/* User dot */}
+        {/* User dot + value callout */}
         {dotPos >= 0 && (
           <div
-            className="absolute w-5 h-5 rounded-full bg-white border-2 border-orange shadow-lg shadow-orange/40"
+            className="absolute"
             style={{ left: `${dotPos}%`, top: '50%', transform: 'translate(-50%, -50%)' }}
-            title={`Your salary: ${formatSalary(salary, currency)}`}
-          />
+          >
+            {/* Callout label above dot */}
+            <div
+              className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-[#1a2e3d] border border-orange/40 rounded-md px-2 py-0.5 whitespace-nowrap text-xs font-semibold text-white shadow"
+            >
+              {formatSalary(salary, currency)}
+            </div>
+            <div className="w-5 h-5 rounded-full bg-white border-2 border-orange shadow-lg shadow-orange/40" />
+          </div>
         )}
       </div>
 
-      {/* Percentile values below — one number per percentile */}
-      <div className="relative mt-3 h-8">
-        {ticks.map((t) => (
-          <div
-            key={t.label}
-            className="absolute flex flex-col items-center"
-            style={{ left: `${t.pos}%`, transform: 'translateX(-50%)' }}
-          >
-            <div className="text-[10px] text-gray-500 leading-none">{t.label}</div>
-            <div className="text-xs text-gray-400 font-medium whitespace-nowrap">{formatSalary(t.value, currency)}</div>
-          </div>
-        ))}
-      </div>
-
       {/* Scale endpoints */}
-      <div className="flex justify-between text-[10px] text-gray-600 mt-1">
+      <div className="flex justify-between text-[10px] text-gray-600 mt-2">
         <span>{formatSalary(scaleMin, currency)}</span>
         <span>{formatSalary(scaleMax, currency)}</span>
       </div>
