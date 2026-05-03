@@ -584,54 +584,30 @@ export default function Benchmark() {
               )}
             </div>
 
-            {/* Full percentile + OTE + equity data */}
-            <div className="bg-card border border-border rounded-2xl p-6 mb-6 space-y-6">
-              {/* Percentiles */}
-              <div>
-                <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Full Percentile Breakdown</h2>
-                <div className="grid grid-cols-2 gap-3">
-                  {[
-                    { label: '25th percentile', value: Math.round(band.low) },
-                    { label: '50th percentile (median)', value: Math.round(band.median) },
-                    { label: '75th percentile', value: Math.round((band.median + band.high) / 2) },
-                    { label: '90th percentile', value: Math.round(band.p90) },
-                  ].map((row) => (
-                    <div key={row.label} className="bg-navy rounded-xl p-4">
-                      <div className="text-xs text-gray-500 mb-1">{row.label}</div>
-                      <div className="text-lg font-bold">{formatSalary(row.value, form.currency)}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+            {/* Percentile visualizer — base salary */}
+            <PercentileVisualizer
+              salary={userSalary}
+              band={band}
+              currency={form.currency}
+              isOte={false}
+            />
 
-              {/* OTE by percentile */}
-              <div>
-                <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">OTE Benchmarks by Percentile</h2>
-                <div className="grid grid-cols-2 gap-3">
-                  {[
-                    { label: '25th percentile', value: Math.round(band.low * band.oteMultiplier) },
-                    { label: '50th percentile (median)', value: Math.round(band.median * band.oteMultiplier) },
-                    { label: '75th percentile', value: Math.round(((band.median + band.high) / 2) * band.oteMultiplier) },
-                    { label: '90th percentile', value: Math.round(band.p90 * band.oteMultiplier) },
-                  ].map((row) => (
-                    <div key={row.label} className="bg-navy rounded-xl p-4">
-                      <div className="text-xs text-gray-500 mb-1">{row.label}</div>
-                      <div className="text-lg font-bold text-orange">{formatSalary(row.value, form.currency)}</div>
-                    </div>
-                  ))}
-                </div>
-                <p className="text-xs text-gray-600 mt-3">
-                  OTE = Base + on-target variable/bonus. Assumes standard commission structure for your role and stage.
-                </p>
-              </div>
+            {/* Percentile visualizer — OTE */}
+            {userOte > 0 && (
+              <PercentileVisualizer
+                salary={userOte}
+                band={band}
+                currency={form.currency}
+                isOte
+              />
+            )}
 
-              {/* Equity */}
+            {/* Equity + package */}
+            <div className="bg-card border border-border rounded-2xl p-6 space-y-6">
               <div>
                 <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Equity Benchmarks</h2>
                 <EquityTable title={form.title} stage={form.stage} />
               </div>
-
-              {/* Your package summary */}
               <div className="bg-orange/5 border border-orange/20 rounded-xl p-4">
                 <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Your Package vs Market</h2>
                 <PackageSummary salary={userSalary} band={band} currency={form.currency} />
@@ -878,6 +854,142 @@ function RangeBar({ salary, band, currency, isOte = false }: { salary: number; b
     </div>
   )
 }
+
+// ─── Ordinal helper ─────────────────────────────────────────────────────────
+
+function ordinal(n: number): string {
+  const s = ['th', 'st', 'nd', 'rd']
+  const v = n % 100
+  return n + (s[(v - 20) % 10] || s[v] || s[0])
+}
+
+// ─── Percentile calculator ────────────────────────────────────────────────────
+
+function calcPercentile(salary: number, band: SalaryBand, scaleMin: number, scaleMax: number): number {
+  if (salary <= 0) return 0
+  const p75 = Math.round((band.median + band.high) / 2)
+  if (salary < band.low)    return Math.max(1,  Math.round((salary - scaleMin) / (band.low - scaleMin) * 25))
+  if (salary < band.median) return Math.round(25 + ((salary - band.low)    / (band.median - band.low))  * 25)
+  if (salary < p75)         return Math.round(50 + ((salary - band.median) / (p75 - band.median))       * 25)
+  if (salary < band.p90)   return Math.round(75 + ((salary - p75)          / (band.p90 - p75))          * 15)
+  return Math.min(99, Math.round(90 + ((salary - band.p90) / (scaleMax - band.p90)) * 9))
+}
+
+// ─── Percentile Visualizer ────────────────────────────────────────────────────
+
+function PercentileVisualizer({
+  salary, band, currency, isOte = false,
+}: {
+  salary: number; band: SalaryBand; currency: string; isOte?: boolean
+}) {
+  const scaleMin = isOte ? 80000  : 50000
+  const scaleMax = isOte ? 1000000 : 400000
+  const span = scaleMax - scaleMin
+  const pct  = (v: number) => Math.min(100, Math.max(0, ((v - scaleMin) / span) * 100))
+
+  const p75        = Math.round((band.median + band.high) / 2)
+  const oteBand    = isOte ? {
+    low: Math.round(band.low * band.oteMultiplier),
+    median: Math.round(band.median * band.oteMultiplier),
+    high: Math.round(band.high * band.oteMultiplier),
+    p90: Math.round(band.p90 * band.oteMultiplier),
+    oteMultiplier: band.oteMultiplier,
+  } : band
+  const activeBand = isOte ? oteBand : band
+  const activeP75  = isOte ? Math.round((oteBand.median + oteBand.high) / 2) : p75
+
+  const percentile = calcPercentile(salary, activeBand, scaleMin, scaleMax)
+  const dotPos     = salary > 0 ? pct(salary) : -1
+
+  const markers = [
+    { label: '25th', value: activeBand.low },
+    { label: '50th', value: activeBand.median },
+    { label: '75th', value: activeP75 },
+    { label: '90th', value: activeBand.p90 },
+  ]
+
+  const contextText =
+    percentile >= 90 ? `Top ${100 - percentile}% — exceptional for your role and stage`
+    : percentile >= 75 ? `You're ahead of ${percentile}% of professionals in this role`
+    : percentile >= 50 ? `Above the median — solid positioning for your stage`
+    : percentile >= 25 ? `Below market median — room to negotiate`
+    : `Below the 25th percentile — significantly under market rate`
+
+  const percentileColour =
+    percentile >= 75 ? 'text-green' : percentile >= 50 ? 'text-orange' : 'text-red-400'
+
+  return (
+    <div className="bg-card border border-border rounded-2xl p-6 mb-6">
+      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">
+        {isOte ? 'Your OTE Percentile' : 'Your Salary Percentile'}
+      </p>
+
+      {salary > 0 ? (
+        <>
+          {/* Big number + context */}
+          <div className="flex items-end gap-4 mb-1">
+            <span className={`text-7xl font-black leading-none ${percentileColour}`}>
+              {ordinal(percentile)}
+            </span>
+            <div className="mb-2 leading-snug">
+              <div className="text-white font-semibold text-sm">percentile</div>
+              <div className="text-gray-500 text-xs">for your role &amp; stage</div>
+            </div>
+          </div>
+          <p className="text-sm text-gray-400 mb-6">{contextText}</p>
+
+          {/* Gradient bar */}
+          <div className="relative h-3 rounded-full bg-gradient-to-r from-red-500 via-orange to-green mb-2">
+            {markers.map((m) => (
+              <div
+                key={m.label}
+                className="absolute top-0 bottom-0 w-px bg-white/15"
+                style={{ left: `${pct(m.value)}%` }}
+              />
+            ))}
+            {/* Glowing user dot */}
+            <div
+              className="absolute w-5 h-5 rounded-full bg-white border-2 border-orange"
+              style={{
+                left: `${dotPos}%`,
+                top: '50%',
+                transform: 'translate(-50%, -50%)',
+                boxShadow: '0 0 0 4px rgba(253,128,46,0.25), 0 0 12px 4px rgba(253,128,46,0.4)',
+              }}
+            />
+          </div>
+
+          {/* Scale endpoints */}
+          <div className="flex justify-between text-[10px] text-gray-600 mb-5">
+            <span>{formatSalary(scaleMin, currency)}</span>
+            <span>{formatSalary(scaleMax, currency)}</span>
+          </div>
+
+          {/* Reference row — 4 percentile values */}
+          <div className="grid grid-cols-4 gap-2">
+            {markers.map((m) => (
+              <div key={m.label} className="bg-navy rounded-xl p-3 text-center">
+                <div className="text-[10px] text-gray-500 mb-1">{m.label}</div>
+                <div className="text-xs font-bold text-gray-300 whitespace-nowrap">
+                  {formatSalary(m.value, currency)}
+                </div>
+              </div>
+            ))}
+          </div>
+          {isOte && (
+            <p className="text-[10px] text-gray-600 mt-3">
+              OTE = Base + on-target variable/bonus. Assumes standard commission structure.
+            </p>
+          )}
+        </>
+      ) : (
+        <p className="text-gray-600 text-sm">Enter your {isOte ? 'OTE' : 'salary'} to see your percentile ranking.</p>
+      )}
+    </div>
+  )
+}
+
+// ─── Package Summary ─────────────────────────────────────────────────────────
 
 function PackageSummary({ salary, band, currency }: { salary: number; band: SalaryBand; currency: string }) {
   const verdict = getVerdict(salary, band)
