@@ -20,6 +20,9 @@ const SALARY_DATA: Record<string, Record<string, SalaryBand>> = {
     'Series C+':           { low: 140000, median: 160000, high: 185000, p90: 210000, oteMultiplier: 1.8 },
     'Scale-up (100-500 employees)': { low: 145000, median: 165000, high: 190000, p90: 215000, oteMultiplier: 1.7 },
     'Enterprise (500+ employees)':  { low: 160000, median: 190000, high: 220000, p90: 250000, oteMultiplier: 1.5 },
+    'PE-backed':                    { low: 155000, median: 185000, high: 215000, p90: 245000, oteMultiplier: 1.6 },
+    'Privately owned (non-PE)':     { low: 130000, median: 155000, high: 180000, p90: 205000, oteMultiplier: 1.5 },
+    'Listed / Public (IPO)':        { low: 165000, median: 195000, high: 230000, p90: 265000, oteMultiplier: 1.5 },
   },
   'Chief Revenue Officer (CRO)': {
     'Seed / Pre-Series A': { low: 90000, median: 110000, high: 135000, p90: 155000, oteMultiplier: 1.6 },
@@ -28,6 +31,9 @@ const SALARY_DATA: Record<string, Record<string, SalaryBand>> = {
     'Series C+':           { low: 165000, median: 195000, high: 225000, p90: 265000, oteMultiplier: 1.7 },
     'Scale-up (100-500 employees)': { low: 175000, median: 205000, high: 235000, p90: 275000, oteMultiplier: 1.6 },
     'Enterprise (500+ employees)':  { low: 200000, median: 240000, high: 285000, p90: 330000, oteMultiplier: 1.5 },
+    'PE-backed':                    { low: 195000, median: 235000, high: 280000, p90: 325000, oteMultiplier: 1.6 },
+    'Privately owned (non-PE)':     { low: 165000, median: 200000, high: 240000, p90: 280000, oteMultiplier: 1.4 },
+    'Listed / Public (IPO)':        { low: 210000, median: 255000, high: 305000, p90: 360000, oteMultiplier: 1.5 },
   },
   'Sales Director': {
     'Seed / Pre-Series A': { low: 45000, median: 55000, high: 70000, p90: 82000, oteMultiplier: 1.5 },
@@ -36,6 +42,9 @@ const SALARY_DATA: Record<string, Record<string, SalaryBand>> = {
     'Series C+':           { low: 85000, median: 100000, high: 120000, p90: 138000, oteMultiplier: 1.6 },
     'Scale-up (100-500 employees)': { low: 90000, median: 108000, high: 128000, p90: 145000, oteMultiplier: 1.5 },
     'Enterprise (500+ employees)':  { low: 105000, median: 125000, high: 148000, p90: 168000, oteMultiplier: 1.5 },
+    'PE-backed':                    { low: 100000, median: 120000, high: 142000, p90: 162000, oteMultiplier: 1.5 },
+    'Privately owned (non-PE)':     { low: 85000, median: 105000, high: 128000, p90: 148000, oteMultiplier: 1.4 },
+    'Listed / Public (IPO)':        { low: 108000, median: 128000, high: 152000, p90: 175000, oteMultiplier: 1.5 },
   },
   'Chief Commercial Officer (CCO)': {
     'Seed / Pre-Series A': { low: 72000, median: 83000, high: 100000, p90: 115000, oteMultiplier: 1.4 },
@@ -44,6 +53,9 @@ const SALARY_DATA: Record<string, Record<string, SalaryBand>> = {
     'Series C+':           { low: 140000, median: 162000, high: 188000, p90: 215000, oteMultiplier: 1.5 },
     'Scale-up (100-500 employees)': { low: 148000, median: 170000, high: 198000, p90: 225000, oteMultiplier: 1.5 },
     'Enterprise (500+ employees)':  { low: 168000, median: 210000, high: 255000, p90: 295000, oteMultiplier: 1.4 },
+    'PE-backed':                    { low: 162000, median: 200000, high: 242000, p90: 282000, oteMultiplier: 1.5 },
+    'Privately owned (non-PE)':     { low: 140000, median: 175000, high: 215000, p90: 250000, oteMultiplier: 1.3 },
+    'Listed / Public (IPO)':        { low: 175000, median: 220000, high: 268000, p90: 310000, oteMultiplier: 1.4 },
   },
   'Head of Sales': {
     'Seed / Pre-Series A': { low: 55000, median: 65000, high: 82000, p90: 95000, oteMultiplier: 1.5 },
@@ -52,6 +64,9 @@ const SALARY_DATA: Record<string, Record<string, SalaryBand>> = {
     'Series C+':           { low: 100000, median: 116000, high: 135000, p90: 155000, oteMultiplier: 1.6 },
     'Scale-up (100-500 employees)': { low: 108000, median: 125000, high: 145000, p90: 165000, oteMultiplier: 1.5 },
     'Enterprise (500+ employees)':  { low: 125000, median: 145000, high: 168000, p90: 190000, oteMultiplier: 1.5 },
+    'PE-backed':                    { low: 118000, median: 138000, high: 160000, p90: 182000, oteMultiplier: 1.5 },
+    'Privately owned (non-PE)':     { low: 100000, median: 120000, high: 142000, p90: 162000, oteMultiplier: 1.4 },
+    'Listed / Public (IPO)':        { low: 128000, median: 150000, high: 175000, p90: 198000, oteMultiplier: 1.5 },
   },
   'Regional Sales Director': {
     'Seed / Pre-Series A': { low: 55000, median: 68000, high: 82000, p90: 95000, oteMultiplier: 1.5 },
@@ -60,6 +75,9 @@ const SALARY_DATA: Record<string, Record<string, SalaryBand>> = {
     'Series C+':           { low: 100000, median: 118000, high: 140000, p90: 160000, oteMultiplier: 1.6 },
     'Scale-up (100-500 employees)': { low: 105000, median: 122000, high: 145000, p90: 165000, oteMultiplier: 1.5 },
     'Enterprise (500+ employees)':  { low: 120000, median: 142000, high: 168000, p90: 192000, oteMultiplier: 1.5 },
+    'PE-backed':                    { low: 115000, median: 135000, high: 160000, p90: 185000, oteMultiplier: 1.5 },
+    'Privately owned (non-PE)':     { low: 98000, median: 118000, high: 142000, p90: 165000, oteMultiplier: 1.4 },
+    'Listed / Public (IPO)':        { low: 122000, median: 145000, high: 172000, p90: 198000, oteMultiplier: 1.5 },
   },
   'Sales Manager': {
     'Seed / Pre-Series A': { low: 38000, median: 48000, high: 60000, p90: 70000, oteMultiplier: 1.4 },
@@ -68,6 +86,9 @@ const SALARY_DATA: Record<string, Record<string, SalaryBand>> = {
     'Series C+':           { low: 60000, median: 75000, high: 92000, p90: 108000, oteMultiplier: 1.5 },
     'Scale-up (100-500 employees)': { low: 62000, median: 78000, high: 95000, p90: 110000, oteMultiplier: 1.5 },
     'Enterprise (500+ employees)':  { low: 70000, median: 88000, high: 108000, p90: 125000, oteMultiplier: 1.4 },
+    'PE-backed':                    { low: 68000, median: 85000, high: 104000, p90: 120000, oteMultiplier: 1.4 },
+    'Privately owned (non-PE)':     { low: 58000, median: 73000, high: 90000, p90: 105000, oteMultiplier: 1.3 },
+    'Listed / Public (IPO)':        { low: 72000, median: 90000, high: 110000, p90: 128000, oteMultiplier: 1.4 },
   },
   'default': {
     'default': { low: 80000, median: 105000, high: 135000, p90: 158000, oteMultiplier: 1.5 },
@@ -120,6 +141,9 @@ interface FormState {
   salary: string
   ote: string
   currency: 'GBP' | 'USD'
+  gender: string
+  equityType: string
+  vestingSchedule: string
 }
 
 type Step = 'form' | 'results' | 'full'
@@ -135,7 +159,13 @@ export default function Benchmark() {
     salary: '',
     ote: '',
     currency: 'GBP',
+    gender: '',
+    equityType: '',
+    vestingSchedule: '',
   })
+
+  const [feedbackText, setFeedbackText] = useState('')
+  const [feedbackSent, setFeedbackSent] = useState(false)
 
   const [step, setStep] = useState<Step>('form')
   const [email, setEmail] = useState('')
@@ -176,6 +206,9 @@ export default function Benchmark() {
         current_salary: form.salary,
         current_ote: form.ote || null,
         currency: form.currency,
+        gender: form.gender || null,
+        equity_type: form.equityType || null,
+        vesting_schedule: form.vestingSchedule || null,
       }).then(({ error }) => {
         if (error) console.error('[benchmark] lead save failed:', error)
         else console.log('[benchmark] lead saved')
@@ -246,16 +279,34 @@ export default function Benchmark() {
                     className={selectClass}
                   >
                     <option value="">Select company stage</option>
-                    {[
-                      'Seed / Pre-Series A',
-                      'Series A',
-                      'Series B',
-                      'Series C+',
-                      'Scale-up (100-500 employees)',
-                      'Enterprise (500+ employees)',
-                    ].map((s) => (
-                      <option key={s} value={s}>{s}</option>
-                    ))}
+                    <optgroup label="Venture-backed">
+                      {['Seed / Pre-Series A','Series A','Series B','Series C+','Scale-up (100-500 employees)'].map((s) => (
+                        <option key={s} value={s}>{s}</option>
+                      ))}
+                    </optgroup>
+                    <optgroup label="Established">
+                      {['Enterprise (500+ employees)','PE-backed','Privately owned (non-PE)','Listed / Public (IPO)'].map((s) => (
+                        <option key={s} value={s}>{s}</option>
+                      ))}
+                    </optgroup>
+                  </select>
+                  <ChevronDown />
+                </div>
+              </div>
+
+              {/* Gender */}
+              <div>
+                <label className={labelClass}>Gender</label>
+                <div className="relative">
+                  <select
+                    value={form.gender}
+                    onChange={(e) => setField('gender', e.target.value)}
+                    className={selectClass}
+                  >
+                    <option value="">Prefer not to say</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Non-binary">Non-binary</option>
                   </select>
                   <ChevronDown />
                 </div>
@@ -353,6 +404,47 @@ export default function Benchmark() {
                     onChange={(e) => setField('ote', e.target.value)}
                     className="flex-1 bg-navy border border-border rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange transition-colors"
                   />
+                </div>
+              </div>
+
+              {/* Equity / Shares */}
+              <div className="pt-2 border-t border-border">
+                <p className="text-sm font-semibold text-white mb-3">Shares & Equity <span className="text-gray-500 font-normal text-xs">(optional)</span></p>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className={labelClass}>Equity Type</label>
+                    <div className="relative">
+                      <select value={form.equityType} onChange={(e) => setField('equityType', e.target.value)} className={selectClass}>
+                        <option value="">Select equity type</option>
+                        <option value="Stock Options (EMI)">Stock Options (EMI)</option>
+                        <option value="Stock Options (Non-EMI)">Stock Options (Non-EMI)</option>
+                        <option value="RSUs (Restricted Stock Units)">RSUs (Restricted Stock Units)</option>
+                        <option value="Phantom Shares">Phantom Shares</option>
+                        <option value="Growth Shares">Growth Shares</option>
+                        <option value="Co-invest / MBO Equity">Co-invest / MBO Equity (PE)</option>
+                        <option value="None">No equity</option>
+                      </select>
+                      <ChevronDown />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className={labelClass}>Vesting Schedule</label>
+                    <div className="relative">
+                      <select value={form.vestingSchedule} onChange={(e) => setField('vestingSchedule', e.target.value)} className={selectClass}>
+                        <option value="">Select vesting schedule</option>
+                        <option value="4-year vest, 1-year cliff">4-year vest, 1-year cliff (standard)</option>
+                        <option value="3-year vest, 1-year cliff">3-year vest, 1-year cliff</option>
+                        <option value="3-year vest, 6-month cliff">3-year vest, 6-month cliff</option>
+                        <option value="2-year vest, no cliff">2-year vest, no cliff</option>
+                        <option value="1-year vest, fully accelerated">1-year vest, fully accelerated</option>
+                        <option value="Immediate vest">Immediate vest</option>
+                        <option value="Not applicable">Not applicable</option>
+                      </select>
+                      <ChevronDown />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -457,11 +549,6 @@ export default function Benchmark() {
               <div>
                 <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-6">Base Salary Range</h2>
                 <RangeBar salary={userSalary} band={band} currency={form.currency} />
-                <div className="flex justify-between text-xs text-gray-500 mt-2">
-                  <span>Low<br />{formatSalary(band.low, form.currency)}</span>
-                  <span className="text-center">Median<br />{formatSalary(band.median, form.currency)}</span>
-                  <span className="text-right">High<br />{formatSalary(band.high, form.currency)}</span>
-                </div>
               </div>
 
               {/* OTE row */}
@@ -487,12 +574,8 @@ export default function Benchmark() {
                       oteMultiplier: band.oteMultiplier,
                     }}
                     currency={form.currency}
+                    isOte
                   />
-                  <div className="flex justify-between text-xs text-gray-500 mt-2">
-                    <span>Low OTE<br />{formatSalary(Math.round(band.low * band.oteMultiplier), form.currency)}</span>
-                    <span className="text-center">Median OTE<br />{formatSalary(Math.round(band.median * band.oteMultiplier), form.currency)}</span>
-                    <span className="text-right">High OTE<br />{formatSalary(Math.round(band.high * band.oteMultiplier), form.currency)}</span>
-                  </div>
                   <OteVerdictBadge userOte={userOte} band={band} currency={form.currency} />
                 </div>
               ) : (
@@ -625,6 +708,53 @@ export default function Benchmark() {
                 Join Searchline →
               </a>
             </div>
+
+            {/* Feedback section */}
+            <div className="bg-card border border-border rounded-2xl p-6 mt-6">
+              <h2 className="text-lg font-bold mb-1">Your feedback is important</h2>
+              <p className="text-gray-400 text-sm mb-4">
+                What else would you like to know? If we like your idea we'll build it for you and let you know once it's ready to review.
+              </p>
+              {feedbackSent ? (
+                <div className="bg-green/10 border border-green/30 rounded-xl px-4 py-3 text-green text-sm font-medium text-center">
+                  ✓ Thanks for your feedback — we'll be in touch if we build it!
+                </div>
+              ) : (
+                <form
+                  onSubmit={async (e) => {
+                    e.preventDefault()
+                    if (!feedbackText.trim()) return
+                    if (supabase) {
+                      await supabase.from('benchmark_feedback').insert({
+                        email: email || null,
+                        feedback: feedbackText.trim(),
+                        job_title: form.title || null,
+                        company_stage: form.stage || null,
+                      }).then(({ error }) => {
+                        if (error) console.error('[feedback] save failed:', error)
+                      })
+                    }
+                    setFeedbackSent(true)
+                  }}
+                  className="flex flex-col gap-3"
+                >
+                  <textarea
+                    value={feedbackText}
+                    onChange={(e) => setFeedbackText(e.target.value)}
+                    placeholder="e.g. I'd love to see bonus structures, pension contributions, or a comparison by gender..."
+                    rows={4}
+                    className="w-full bg-navy border border-border rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-orange transition-colors resize-none text-sm"
+                  />
+                  <button
+                    type="submit"
+                    disabled={!feedbackText.trim()}
+                    className="self-end bg-orange hover:bg-orange/90 disabled:bg-orange/30 disabled:cursor-not-allowed transition-colors text-white font-semibold px-5 py-2.5 rounded-lg text-sm"
+                  >
+                    Send feedback →
+                  </button>
+                </form>
+              )}
+            </div>
           </div>
         )}
 
@@ -699,25 +829,63 @@ function VerdictBadge({ salary, band, currency }: { salary: number; band: Salary
   )
 }
 
-function RangeBar({ salary, band, currency }: { salary: number; band: SalaryBand; currency: string }) {
-  const rangeMin = band.low * 0.7
-  const rangeMax = band.high * 1.2
-  const dotPercent = Math.min(100, Math.max(0, ((salary - rangeMin) / (rangeMax - rangeMin)) * 100))
+function RangeBar({ salary, band, currency, isOte = false }: { salary: number; band: SalaryBand; currency: string; isOte?: boolean }) {
+  const scaleMin = isOte ? 80000 : 50000
+  const scaleMax = isOte ? 1000000 : 400000
+  const span = scaleMax - scaleMin
+
+  const pct = (v: number) => Math.min(100, Math.max(0, ((v - scaleMin) / span) * 100))
+
+  // p25 = band.low, p50 = band.median, p75 = midpoint, p90 = band.p90
+  const p75 = Math.round((band.median + band.high) / 2)
+  const ticks = [
+    { pos: pct(band.low),    value: band.low,    label: '25th' },
+    { pos: pct(band.median), value: band.median, label: '50th' },
+    { pos: pct(p75),         value: p75,         label: '75th' },
+    { pos: pct(band.p90),    value: band.p90,    label: '90th' },
+  ]
+  const dotPos = salary > 0 ? pct(salary) : -1
 
   return (
-    <div className="relative h-6 flex items-center">
-      {/* Track */}
-      <div className="w-full h-2 bg-navy rounded-full relative">
-        {/* Filled range */}
-        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-orange/30 via-orange to-green" />
-        {/* User dot */}
-        {salary > 0 && (
+    <div className="mb-10">
+      {/* Bar */}
+      <div className="relative h-3 rounded-full bg-gradient-to-r from-red-500 via-orange to-green overflow-visible">
+        {/* Percentile tick marks — thin lines on the bar */}
+        {ticks.map((t) => (
           <div
-            className="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-white border-2 border-orange shadow-lg shadow-orange/40 transition-all"
-            style={{ left: `${dotPercent}%`, transform: 'translate(-50%, -50%)' }}
+            key={t.label}
+            className="absolute top-0 bottom-0 w-px bg-white/10"
+            style={{ left: `${t.pos}%` }}
+          />
+        ))}
+        {/* User dot */}
+        {dotPos >= 0 && (
+          <div
+            className="absolute w-5 h-5 rounded-full bg-white border-2 border-orange shadow-lg shadow-orange/40"
+            style={{ left: `${dotPos}%`, top: '50%', transform: 'translate(-50%, -50%)' }}
             title={`Your salary: ${formatSalary(salary, currency)}`}
           />
         )}
+      </div>
+
+      {/* Percentile values below — one number per percentile */}
+      <div className="relative mt-3 h-8">
+        {ticks.map((t) => (
+          <div
+            key={t.label}
+            className="absolute flex flex-col items-center"
+            style={{ left: `${t.pos}%`, transform: 'translateX(-50%)' }}
+          >
+            <div className="text-[10px] text-gray-500 leading-none">{t.label}</div>
+            <div className="text-xs text-gray-400 font-medium whitespace-nowrap">{formatSalary(t.value, currency)}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Scale endpoints */}
+      <div className="flex justify-between text-[10px] text-gray-600 mt-1">
+        <span>{formatSalary(scaleMin, currency)}</span>
+        <span>{formatSalary(scaleMax, currency)}</span>
       </div>
     </div>
   )
