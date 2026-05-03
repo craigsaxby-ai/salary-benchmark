@@ -90,6 +90,50 @@ const SALARY_DATA: Record<string, Record<string, SalaryBand>> = {
     'Privately owned (non-PE)':     { low: 58000, median: 73000, high: 90000, p90: 105000, oteMultiplier: 1.3 },
     'Listed / Public (IPO)':        { low: 72000, median: 90000, high: 110000, p90: 128000, oteMultiplier: 1.4 },
   },
+  'SDR Manager': {
+    'Seed / Pre-Series A': { low: 35000, median: 45000, high: 58000, p90: 68000, oteMultiplier: 1.35 },
+    'Series A':            { low: 42000, median: 52000, high: 65000, p90: 75000, oteMultiplier: 1.4 },
+    'Series B':            { low: 48000, median: 60000, high: 74000, p90: 85000, oteMultiplier: 1.4 },
+    'Series C+':           { low: 55000, median: 68000, high: 82000, p90: 95000, oteMultiplier: 1.35 },
+    'Scale-up (100-500 employees)': { low: 55000, median: 68000, high: 83000, p90: 95000, oteMultiplier: 1.35 },
+    'Enterprise (500+ employees)':  { low: 62000, median: 75000, high: 90000, p90: 105000, oteMultiplier: 1.3 },
+    'PE-backed':                    { low: 58000, median: 72000, high: 87000, p90: 100000, oteMultiplier: 1.3 },
+    'Privately owned (non-PE)':     { low: 48000, median: 60000, high: 74000, p90: 85000, oteMultiplier: 1.3 },
+    'Listed / Public (IPO)':        { low: 62000, median: 76000, high: 92000, p90: 107000, oteMultiplier: 1.3 },
+  },
+  'Revenue Director': {
+    'Seed / Pre-Series A': { low: 70000, median: 85000, high: 100000, p90: 115000, oteMultiplier: 1.6 },
+    'Series A':            { low: 85000, median: 100000, high: 118000, p90: 135000, oteMultiplier: 1.6 },
+    'Series B':            { low: 100000, median: 118000, high: 140000, p90: 160000, oteMultiplier: 1.65 },
+    'Series C+':           { low: 120000, median: 145000, high: 170000, p90: 195000, oteMultiplier: 1.65 },
+    'Scale-up (100-500 employees)': { low: 125000, median: 148000, high: 175000, p90: 200000, oteMultiplier: 1.6 },
+    'Enterprise (500+ employees)':  { low: 145000, median: 175000, high: 205000, p90: 235000, oteMultiplier: 1.55 },
+    'PE-backed':                    { low: 140000, median: 170000, high: 200000, p90: 230000, oteMultiplier: 1.6 },
+    'Privately owned (non-PE)':     { low: 118000, median: 142000, high: 168000, p90: 192000, oteMultiplier: 1.5 },
+    'Listed / Public (IPO)':        { low: 150000, median: 180000, high: 215000, p90: 248000, oteMultiplier: 1.5 },
+  },
+  'Enterprise Account Executive': {
+    'Seed / Pre-Series A': { low: 60000, median: 72000, high: 88000, p90: 100000, oteMultiplier: 1.8 },
+    'Series A':            { low: 70000, median: 84000, high: 100000, p90: 115000, oteMultiplier: 1.9 },
+    'Series B':            { low: 80000, median: 96000, high: 115000, p90: 130000, oteMultiplier: 1.9 },
+    'Series C+':           { low: 95000, median: 112000, high: 132000, p90: 150000, oteMultiplier: 2.0 },
+    'Scale-up (100-500 employees)': { low: 98000, median: 115000, high: 135000, p90: 155000, oteMultiplier: 1.9 },
+    'Enterprise (500+ employees)':  { low: 110000, median: 130000, high: 155000, p90: 178000, oteMultiplier: 1.8 },
+    'PE-backed':                    { low: 105000, median: 125000, high: 148000, p90: 170000, oteMultiplier: 1.8 },
+    'Privately owned (non-PE)':     { low: 88000, median: 105000, high: 125000, p90: 145000, oteMultiplier: 1.7 },
+    'Listed / Public (IPO)':        { low: 112000, median: 132000, high: 158000, p90: 182000, oteMultiplier: 1.8 },
+  },
+  'Strategic Account Executive': {
+    'Seed / Pre-Series A': { low: 75000, median: 92000, high: 110000, p90: 126000, oteMultiplier: 2.0 },
+    'Series A':            { low: 88000, median: 108000, high: 128000, p90: 148000, oteMultiplier: 2.0 },
+    'Series B':            { low: 100000, median: 120000, high: 142000, p90: 162000, oteMultiplier: 2.1 },
+    'Series C+':           { low: 115000, median: 138000, high: 162000, p90: 185000, oteMultiplier: 2.1 },
+    'Scale-up (100-500 employees)': { low: 118000, median: 142000, high: 168000, p90: 192000, oteMultiplier: 2.0 },
+    'Enterprise (500+ employees)':  { low: 130000, median: 158000, high: 188000, p90: 218000, oteMultiplier: 2.0 },
+    'PE-backed':                    { low: 125000, median: 152000, high: 182000, p90: 210000, oteMultiplier: 2.0 },
+    'Privately owned (non-PE)':     { low: 108000, median: 132000, high: 158000, p90: 182000, oteMultiplier: 1.9 },
+    'Listed / Public (IPO)':        { low: 135000, median: 162000, high: 192000, p90: 222000, oteMultiplier: 2.0 },
+  },
   'default': {
     'default': { low: 80000, median: 105000, high: 135000, p90: 158000, oteMultiplier: 1.5 },
   },
@@ -254,13 +298,17 @@ export default function Benchmark() {
                   >
                     <option value="">Select your title</option>
                     {[
-                      'VP of Sales',
-                      'Sales Director',
                       'Chief Revenue Officer (CRO)',
                       'Chief Commercial Officer (CCO)',
+                      'VP of Sales',
+                      'Revenue Director',
                       'Head of Sales',
+                      'Sales Director',
                       'Regional Sales Director',
                       'Sales Manager',
+                      'SDR Manager',
+                      'Enterprise Account Executive',
+                      'Strategic Account Executive',
                     ].map((t) => (
                       <option key={t} value={t}>{t}</option>
                     ))}
@@ -539,8 +587,8 @@ export default function Benchmark() {
               ✓ Full report also sent to your email
             </div>
 
-            {/* Verdict badge */}
-            <VerdictBadge salary={userSalary} band={band} currency={form.currency} />
+            {/* Underpaid Verdict — top of results */}
+            <UnderpaidVerdict salary={userSalary} ote={userOte} band={band} currency={form.currency} />
 
             {/* Range bar */}
             <div className="bg-card border border-border rounded-2xl p-6 mb-6 space-y-6">
@@ -583,6 +631,26 @@ export default function Benchmark() {
                 </p>
               )}
             </div>
+
+            {/* Pay Component Breakdown */}
+            <PayComponentBreakdown
+              salary={userSalary}
+              ote={userOte}
+              band={band}
+              currency={form.currency}
+              equityType={form.equityType}
+            />
+
+            {/* Similar Profiles */}
+            <SimilarProfiles
+              title={form.title}
+              stage={form.stage}
+              location={form.location}
+              salary={userSalary}
+              ote={userOte}
+              band={band}
+              currency={form.currency}
+            />
 
             {/* Percentile visualizer — base salary */}
             <PercentileVisualizer
@@ -781,25 +849,6 @@ function VerdictPill({ salary, band }: { salary: number; band: SalaryBand }) {
     <div className={`inline-flex items-center gap-2 border rounded-full px-4 py-2 text-sm font-semibold mb-2 ${config.color}`}>
       <span>{config.icon}</span>
       <span>{config.label}</span>
-    </div>
-  )
-}
-
-function VerdictBadge({ salary, band, currency }: { salary: number; band: SalaryBand; currency: string }) {
-  const verdict = getVerdict(salary, band)
-  const config = {
-    below: { label: "You're below market", color: 'text-red-400 bg-red-400/10 border-red-400/20' },
-    at: { label: "You're at market", color: 'text-orange bg-orange/10 border-orange/20' },
-    above: { label: "You're above market", color: 'text-green bg-green/10 border-green/20' },
-  }[verdict]
-
-  return (
-    <div className={`inline-flex items-center gap-2 border rounded-full px-4 py-2 text-sm font-semibold mb-6 ${config.color}`}>
-      <span>{verdict === 'below' ? '⬇' : verdict === 'above' ? '⬆' : '✓'}</span>
-      <span>{config.label}</span>
-      {salary > 0 && (
-        <span className="opacity-70">· Your salary: {formatSalary(salary, currency)}</span>
-      )}
     </div>
   )
 }
@@ -1041,6 +1090,323 @@ function OteVerdictBadge({ userOte, band, currency }: { userOte: number; band: S
       <span>{config.icon}</span>
       <span>{config.label}</span>
       <span className="opacity-70">· Your OTE: {formatSalary(userOte, currency)}</span>
+    </div>
+  )
+}
+
+// ─── Underpaid Verdict ───────────────────────────────────────────────────────
+
+function UnderpaidVerdict({
+  salary, ote, band, currency,
+}: {
+  salary: number; ote: number; band: SalaryBand; currency: string
+}) {
+  const marketBase = band.median
+  const marketOte  = Math.round(band.median * band.oteMultiplier)
+
+  type Verdict = 'underpaid' | 'at' | 'above'
+  const classify = (user: number, market: number): Verdict | null => {
+    if (user <= 0) return null
+    const r = user / market
+    if (r < 0.85) return 'underpaid'
+    if (r > 1.15) return 'above'
+    return 'at'
+  }
+
+  const baseVerdict  = classify(salary, marketBase)
+  const oteVerdict   = classify(ote, marketOte)
+
+  const headlines: Record<string, string> = {
+    'underpaid-null':     'You appear to be underpaid on base salary.',
+    'underpaid-underpaid':'You appear to be underpaid on both base salary and OTE.',
+    'underpaid-at':       'You appear to be underpaid on base salary, but competitive on OTE.',
+    'underpaid-above':    'Your base salary is below market, but your OTE is above average.',
+    'at-null':            'Your base salary is at market rate.',
+    'at-at':              'Your compensation is broadly in line with market rate.',
+    'at-underpaid':       'Your base salary is at market, but your OTE is below the typical range.',
+    'at-above':           'Your base is at market and your OTE is above average — strong package.',
+    'above-null':         'Your base salary is above market rate — well positioned.',
+    'above-above':        'Both your base and OTE are above market rate — excellent package.',
+    'above-at':           'Your base salary is above market, with OTE at the typical rate.',
+    'above-underpaid':    'Your base is above market, but your variable pay is below typical for your role.',
+  }
+
+  const key = `${baseVerdict ?? 'null'}-${oteVerdict ?? 'null'}`
+  const headline = headlines[key] ?? 'Your compensation has been benchmarked against current market data.'
+
+  const overallVerdict: Verdict =
+    (baseVerdict === 'underpaid' || oteVerdict === 'underpaid') ? 'underpaid' :
+    (baseVerdict === 'above' && (oteVerdict === 'above' || oteVerdict === null)) ? 'above' : 'at'
+
+  const border   = overallVerdict === 'underpaid' ? 'border-red-400/50' : overallVerdict === 'above' ? 'border-green/50' : 'border-orange/50'
+  const heading  = overallVerdict === 'underpaid' ? 'text-red-400'      : overallVerdict === 'above' ? 'text-green'      : 'text-orange'
+  const bg       = overallVerdict === 'underpaid' ? 'bg-red-400/5'      : overallVerdict === 'above' ? 'bg-green/5'      : 'bg-orange/5'
+
+  const pillCfg = (v: Verdict | null) =>
+    v === 'underpaid' ? { color: 'text-red-400 bg-red-400/10 border-red-400/20',  icon: '↓' } :
+    v === 'above'     ? { color: 'text-green bg-green/10 border-green/20',        icon: '↑' } :
+    v === 'at'        ? { color: 'text-orange bg-orange/10 border-orange/20',     icon: '≈' } :
+                        { color: 'text-gray-500 bg-gray-500/10 border-gray-500/20', icon: '—' }
+
+  const basePill = pillCfg(baseVerdict)
+  const otePill  = pillCfg(oteVerdict)
+
+  const totalSalary = ote > 0 ? ote : salary
+  const totalMarket = ote > 0 ? marketOte : marketBase
+  const totalPill   = pillCfg(classify(totalSalary, totalMarket))
+
+  return (
+    <div className={`${bg} border ${border} rounded-2xl p-6 mb-6`}>
+      <h2 className={`text-xl font-bold mb-2 ${heading}`}>{headline}</h2>
+      <p className="text-gray-400 text-sm mb-4">
+        Benchmark: {formatSalary(marketBase, currency)} median base · {formatSalary(marketOte, currency)} median OTE
+      </p>
+      <div className="flex flex-wrap gap-2">
+        <span className={`inline-flex items-center gap-1.5 border rounded-full px-3 py-1 text-xs font-semibold ${basePill.color}`}>
+          <span>{basePill.icon}</span> Base
+        </span>
+        <span className={`inline-flex items-center gap-1.5 border rounded-full px-3 py-1 text-xs font-semibold ${otePill.color}`}>
+          <span>{otePill.icon}</span> OTE{ote === 0 ? ' (not entered)' : ''}
+        </span>
+        <span className={`inline-flex items-center gap-1.5 border rounded-full px-3 py-1 text-xs font-semibold ${totalPill.color}`}>
+          <span>{totalPill.icon}</span> Total Package
+        </span>
+      </div>
+    </div>
+  )
+}
+
+// ─── Pay Component Breakdown ──────────────────────────────────────────────────
+
+function PayComponentBreakdown({
+  salary, ote, band, currency, equityType,
+}: {
+  salary: number; ote: number; band: SalaryBand; currency: string; equityType: string
+}) {
+  const marketBase     = band.median
+  const marketOte      = Math.round(band.median * band.oteMultiplier)
+  const marketVariable = marketOte - marketBase
+  const userVariable   = ote > 0 ? ote - salary : null
+  const estimatedOte   = ote === 0 && salary > 0 ? Math.round(salary * band.oteMultiplier) : null
+
+  type Status = 'Above' | 'At market' | 'Below' | 'N/A'
+  const statusCfg: Record<Status, string> = {
+    'Above':    'text-green bg-green/10 border-green/20',
+    'At market':'text-orange bg-orange/10 border-orange/20',
+    'Below':    'text-red-400 bg-red-400/10 border-red-400/20',
+    'N/A':      'text-gray-500 bg-gray-500/10 border-gray-500/20',
+  }
+
+  const getStatus = (user: number | null, market: number): Status => {
+    if (user === null || user <= 0) return 'N/A'
+    const r = user / market
+    if (r < 0.85) return 'Below'
+    if (r > 1.15) return 'Above'
+    return 'At market'
+  }
+
+  const gapPct = (user: number, market: number) => {
+    const d = ((user - market) / market) * 100
+    return (d > 0 ? '+' : '') + d.toFixed(1) + '%'
+  }
+
+  const baseStatus     = getStatus(salary > 0 ? salary : null, marketBase)
+  const variableStatus = getStatus(userVariable, marketVariable)
+  const oteStatus      = getStatus(ote > 0 ? ote : (estimatedOte ?? null), marketOte)
+
+  const baseRatio = salary > 0 ? salary / marketBase : null
+  const oteRatio  = ote > 0    ? ote / marketOte      : null
+
+  const verdictLine =
+    baseRatio === null ? 'Enter your salary to see a full breakdown.' :
+    baseRatio < 0.85 && oteRatio !== null && oteRatio >= 0.85
+      ? 'Your OTE is competitive, but your base salary is slightly below the typical range for similar roles.' :
+    baseRatio < 0.85
+      ? 'Your base salary is below market for this role and stage — there may be room to negotiate.' :
+    baseRatio > 1.15
+      ? 'Your base salary is above the market median — you are well positioned.' :
+      'Your compensation is broadly in line with the market for this role and stage.'
+
+  const Row = ({
+    label, userValue, marketValue, status, note,
+  }: {
+    label: string
+    userValue: React.ReactNode
+    marketValue: React.ReactNode
+    status: Status
+    note?: React.ReactNode
+  }) => (
+    <div className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-2 py-2.5 border-b border-border/40 last:border-0">
+      <span className="text-sm text-gray-300 font-medium">{label}</span>
+      <span className="text-sm text-white font-semibold text-right min-w-[90px]">{userValue}</span>
+      <span className="text-xs text-gray-500 text-right min-w-[90px]">{marketValue}{note}</span>
+      <span className={`text-[10px] font-semibold border rounded-full px-2 py-0.5 whitespace-nowrap ${statusCfg[status]}`}>
+        {status}
+      </span>
+    </div>
+  )
+
+  return (
+    <div className="bg-card border border-border rounded-2xl p-6 mb-6">
+      <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-1">Pay Component Breakdown</h2>
+      <p className="text-xs text-gray-500 mb-4">Your package vs market across each component</p>
+
+      <div className="mb-1">
+        <div className="grid grid-cols-[1fr_auto_auto_auto] gap-2 pb-1.5 mb-1 border-b border-border">
+          <span className="text-[10px] text-gray-600 uppercase tracking-wide">Component</span>
+          <span className="text-[10px] text-gray-600 uppercase tracking-wide text-right min-w-[90px]">Yours</span>
+          <span className="text-[10px] text-gray-600 uppercase tracking-wide text-right min-w-[90px]">Market median</span>
+          <span className="text-[10px] text-gray-600 uppercase tracking-wide">Status</span>
+        </div>
+
+        <Row
+          label="Base Salary"
+          userValue={salary > 0 ? formatSalary(salary, currency) : '—'}
+          marketValue={formatSalary(marketBase, currency)}
+          status={baseStatus}
+          note={salary > 0 ? <span className="text-gray-600 ml-1">({gapPct(salary, marketBase)})</span> : undefined}
+        />
+        <Row
+          label="Variable / Commission"
+          userValue={userVariable !== null ? formatSalary(userVariable, currency) : <span className="text-gray-600 text-xs">— Not provided</span>}
+          marketValue={formatSalary(marketVariable, currency)}
+          status={variableStatus}
+        />
+        <Row
+          label="Total OTE"
+          userValue={ote > 0
+            ? formatSalary(ote, currency)
+            : estimatedOte
+              ? <span className="text-gray-500 text-xs">~{formatSalary(estimatedOte, currency)} (est.)</span>
+              : '—'}
+          marketValue={formatSalary(marketOte, currency)}
+          status={oteStatus}
+        />
+        <Row
+          label="Equity"
+          userValue={<span className="text-xs text-gray-400">{equityType || 'Not specified'}</span>}
+          marketValue={<span className="text-xs">Varies by stage</span>}
+          status="N/A"
+        />
+        <Row
+          label="Benefits / Pension"
+          userValue={<span className="text-xs text-gray-500">—</span>}
+          marketValue={<span className="text-xs">5–8% pension, car allowance varies</span>}
+          status="N/A"
+        />
+      </div>
+
+      <p className="text-xs text-gray-500 italic mt-3 pt-3 border-t border-border/40">{verdictLine}</p>
+    </div>
+  )
+}
+
+// ─── Similar Profiles ─────────────────────────────────────────────────────────
+
+function SimilarProfiles({
+  title, stage, location, band, currency,
+}: {
+  title: string; stage: string; location: string; salary: number; ote: number; band: SalaryBand; currency: string
+}) {
+  const teamSizeMap: Record<string, string> = {
+    'Seed / Pre-Series A': '5–20 people',
+    'Series A': '20–80 people',
+    'Series B': '50–200 people',
+    'Series C+': '150–500 people',
+    'Scale-up (100-500 employees)': '100–500 people',
+    'Enterprise (500+ employees)': '500+ people',
+    'PE-backed': '50–500 people',
+    'Privately owned (non-PE)': 'Varies',
+    'Listed / Public (IPO)': '500+ people',
+  }
+
+  const getPeerGroup = (t: string): string => {
+    const ic       = ['Enterprise Account Executive', 'Strategic Account Executive', 'SDR Manager', 'Sales Manager']
+    const senior   = ['Chief Revenue Officer (CRO)', 'Chief Commercial Officer (CCO)', 'VP of Sales', 'Revenue Director']
+    const commercial = ['Sales Director', 'Head of Sales', 'Regional Sales Director']
+    if (ic.includes(t))         return 'Individual contributor / front-line management'
+    if (senior.includes(t))     return 'Senior sales leadership'
+    if (commercial.includes(t)) return 'Commercial leadership'
+    return 'Sales leadership'
+  }
+
+  const getProfileCount = (t: string, s: string): number => {
+    const base: Record<string, number> = {
+      'Sales Manager': 220,
+      'Sales Director': 180,
+      'Head of Sales': 160,
+      'VP of Sales': 120,
+      'Regional Sales Director': 100,
+      'Enterprise Account Executive': 140,
+      'Strategic Account Executive': 80,
+      'SDR Manager': 110,
+      'Revenue Director': 75,
+      'Chief Revenue Officer (CRO)': 60,
+      'Chief Commercial Officer (CCO)': 45,
+    }
+    const mult: Record<string, number> = {
+      'Series A': 1.3, 'Series B': 1.2, 'Series C+': 1.1,
+      'Scale-up (100-500 employees)': 1.0, 'Enterprise (500+ employees)': 0.9,
+      'Seed / Pre-Series A': 0.7, 'PE-backed': 0.8,
+      'Privately owned (non-PE)': 0.85, 'Listed / Public (IPO)': 0.6,
+    }
+    return Math.round((base[t] ?? 80) * (mult[s] ?? 1.0))
+  }
+
+  const isDefault      = !SALARY_DATA[title]
+  const teamSize       = teamSizeMap[stage] ?? 'Varies'
+  const peerGroup      = getPeerGroup(title)
+  const profileCount   = getProfileCount(title, stage)
+  const medianBase     = band.median
+  const medianOte      = Math.round(band.median * band.oteMultiplier)
+
+  const attrs = [
+    { label: 'Role',      value: title || 'Not specified' },
+    { label: 'Stage',     value: stage || 'Not specified' },
+    { label: 'Location',  value: location || 'Not specified' },
+    { label: 'Team size', value: teamSize },
+    { label: 'Peer group', value: peerGroup },
+  ]
+
+  return (
+    <div className="bg-card border border-border rounded-2xl p-6 mb-6">
+      <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-1">People Like You</h2>
+      <p className="text-xs text-gray-500 mb-5">
+        Based on similar profiles: {title}, {stage}, {location}
+      </p>
+
+      {isDefault && (
+        <div className="bg-orange/5 border border-orange/20 rounded-xl px-4 py-2 text-xs text-orange mb-4">
+          Limited matching data available. We are using the closest available peer group.
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        {/* Left: profile attributes */}
+        <div className="space-y-3">
+          {attrs.map((a) => (
+            <div key={a.label}>
+              <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">{a.label}</div>
+              <div className="text-sm text-white">{a.value}</div>
+            </div>
+          ))}
+        </div>
+        {/* Right: median numbers */}
+        <div className="bg-navy rounded-xl p-5 flex flex-col justify-center space-y-4">
+          <div>
+            <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1">Peer Median Base</div>
+            <div className="text-3xl font-black text-orange">{formatSalary(medianBase, currency)}</div>
+          </div>
+          <div>
+            <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wide mb-1">Peer Median OTE</div>
+            <div className="text-3xl font-black text-white">{formatSalary(medianOte, currency)}</div>
+          </div>
+        </div>
+      </div>
+
+      <p className="text-[10px] text-gray-600 mt-4">
+        Comparison based on {profileCount} comparable profiles in our dataset.
+      </p>
     </div>
   )
 }
